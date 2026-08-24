@@ -1,0 +1,56 @@
+import sys
+
+class DSU:
+    def __init__(self):
+        self.parent = {}
+        self.size = {}
+
+    def find(self, x):
+        if x not in self.parent:
+            self.parent[x] = x
+            self.size[x] = 1
+        while self.parent[x] != x:
+            self.parent[x] = self.parent[self.parent[x]]  # path compression
+            x = self.parent[x]
+        return x
+
+    def union(self, a, b):
+        ra, rb = self.find(a), self.find(b)
+        if ra == rb:
+            return
+        # union by size
+        if self.size[ra] < self.size[rb]:
+            ra, rb = rb, ra
+        self.parent[rb] = ra
+        self.size[ra] += self.size[rb]
+
+
+def connectedComponents(bg):
+    dsu = DSU()
+    for a, b in bg:
+        dsu.union(a, b)
+
+    # Tally final component sizes by root
+    sizes = {}
+    for node in dsu.parent:
+        root = dsu.find(node)
+        sizes[root] = dsu.size[root]
+
+    # Only components with 2+ nodes count
+    comp_sizes = [s for s in sizes.values() if s >= 2]
+
+    return [min(comp_sizes), max(comp_sizes)]
+
+
+if __name__ == "__main__":
+    data = sys.stdin.read().split()
+    idx = 0
+    n = int(data[idx]); idx += 1
+    bg = []
+    for _ in range(n):
+        a = int(data[idx]); idx += 1
+        b = int(data[idx]); idx += 1
+        bg.append([a, b])
+
+    result = connectedComponents(bg)
+    print(result[0], result[1])
