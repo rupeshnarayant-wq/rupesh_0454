@@ -77,13 +77,3 @@ Output:
 6 6 -1
 
 
-# Screenshots
-- Add HackerRank submission screenshot showing **all test cases passed**.  
-- Include sample output screenshot from your local run.
-
-
-# Observations
-- BFS guarantees shortest paths in an unweighted graph with uniform edge weights.  
-- Each edge contributes a fixed cost of **6 units**.  
-- **Time Complexity:** O(V + E)  
-- **Space Complexity:** O(V + E)  
